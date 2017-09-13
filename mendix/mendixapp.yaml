@@ -1,0 +1,49 @@
+---
+apiVersion: "v1"
+kind: "List"
+items:
+
+  - apiVersion: v1
+    kind: "Namespace"
+    metadata:
+      name: "mendix"
+      labels:
+        name: "mendix"
+        
+  - apiVersion: apps/v1beta1
+    kind: "Deployment"
+    metadata:
+      name: mendixapp-deployment
+      namespace: mendix
+    spec:
+      replicas: 1 # tells deployment to run 1 pod matching the template
+      template: # create pods using pod definition in this template
+        metadata:
+          labels:
+            app: "companyexpenses"
+        spec:
+          containers:
+          - name: mendixapp
+            image: mxclyde/companyexpenses:58
+            ports:
+            - containerPort: 80
+            env:
+              - name: DATABASE_ENDPOINT
+                value: "postgres://MxDbUser@mxpostgresqldb:dbpassword@mxpostgresqldb.postgres.database.azure.com/companyexpenses"
+              - name: ADMIN_PASSWORD
+                value: "Password1!"            
+  - apiVersion: "v1"
+    kind: "Service"
+    metadata:
+      name: "mendixapp"
+      namespace: "mendix"
+      labels:
+        app: "companyexpenses"
+    spec:
+      type: "LoadBalancer"
+      selector:
+        app: "companyexpenses"
+      ports:
+      - port: 80
+
+          
