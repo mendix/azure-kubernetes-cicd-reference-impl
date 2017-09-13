@@ -1,6 +1,6 @@
-# Mendix CI/CD Reference Implementation
+# Mendix Azure Kubernetes CI/CD Reference Implementation
 
-The Mendix CI/CD Reference Implementation is a reference implementation for running a cluster of Mendix runtime instances by setting up a Kubernetes cluster on Azure. The Kubernetes cluster will use Docker containers built using the Mendix Docker buildpack. The build and deployment of containers on the cluster is orchestrated using Jenkins.
+The Mendix Azure Kubernetes CI/CD Reference Implementation is a reference implementation for running a cluster of Mendix runtime instances by setting up a Kubernetes cluster on Azure. The Kubernetes cluster will use Docker containers built using the [Mendix Docker buildpack](https://github.com/mendix/docker-mendix-buildpack). The build and deployment of containers on the cluster is orchestrated using Jenkins.
 
 # Components
 
@@ -26,7 +26,7 @@ The flow is to run a Jenkins Master containerized in a Kubernetes cluster which 
 
 1) Clone this repository using:
 ```
-git clone https://github.com/MXClyde/mendix-devops-ref-arch
+git clone https://github.com/mendix/azure-kubernetes-cicd-reference-impl
 ```
 2) [Install the Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 3) Login to Azure using:
@@ -91,7 +91,7 @@ node {
     stage('Build project & push image') {
       docker.withServer('unix:///var/run/docker.sock') {
         docker.withRegistry('https://index.docker.io/v1', 'dockerregistry')   {
-          def image = docker.build("mxclyde/companyexpenses:latest", '--build-arg BUILD_PATH=project .')
+          def image = docker.build("mxproject/companyexpenses:latest", '--build-arg BUILD_PATH=project .')
           }
         }
      }
