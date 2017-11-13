@@ -170,7 +170,7 @@ node {
 }
 ```
 
-7) Executing this pipeline will deploy your app to the Kubernetes cluster
+7) Executing this pipeline (click "Build now") will deploy your app to the Kubernetes cluster
 
 ## Part 5 - Accessing your app
 
