@@ -115,5 +115,8 @@ node {
 ## Part 3 - Deploy a database on Azure
 
 Your Mendix app needs a database to store persistent data. In this how-to we will use an Azure SQL Database for this  purpose. 
+This can be done via the Azure Portal:
+
+![Create database in Azure Portal](images/createazuredb.png "Create database in Azure Portal")
 
 ## Part 4 - Deploying a Mendix instance on the Kubernetes cluster
