@@ -11,7 +11,7 @@ The reference implementation uses the following components:
 - CI/CD platform: [Jenkins](https://jenkins.io/)
 - [Mendix Docker Build Pack](https://github.com/mendix/docker-mendix-buildpack)
 
-The flow is to run a Jenkins Master containerized in a Kubernetes cluster which spawns temporary Jenkin build slaves in seperate containers for executing Mendix building jobs (using the Mendix build pack). The compiled container image is stored in a private registry and can subequently be used to deploy app nodes to the Kubernetes cluster.
+The flow is to run a Jenkins Master containerized in a Kubernetes cluster which spawns temporary Jenkin build slaves in seperate containers for executing Mendix building jobs (using the Mendix build pack). The compiled container image is stored in a registry and can subequently be used to deploy app nodes to the Kubernetes cluster.
 
 ![Toolchain](images/Toolchain.png "Toolchain")
 
