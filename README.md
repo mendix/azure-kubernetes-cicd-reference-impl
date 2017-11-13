@@ -140,7 +140,7 @@ This should update the local configuration file of your Kubernetes client to poi
 jdbc:sqlserver://<*DBSRVNAME*>.database.windows.net:1433;database=<*DBNAME*>;user=<*USERNAME*>@<*DBSRVNAME*>;password=<*PASSWORD*>
 ```
 
-Replace the following tokens, example is taken from the Azure SQL database created earlier:
+Replace the following tokens, example values in the table below are taken from the Azure SQL database created earlier in this howto:
 
 |Token|Value|
 |-----|-----|
