@@ -117,6 +117,7 @@ node {
 Your Mendix app needs a database to store persistent data. In this how-to we will use an Azure SQL Database for this  purpose. 
 This can be done via the Azure Portal:
 
+*Do not forget to note the server admin login username and password chosen during database server creation, we will need those later*
 ![Create database in Azure Portal](images/createazuredb.png "Create database in Azure Portal")
 
 ## Part 4 - Creating a deployment pipeline
@@ -139,13 +140,13 @@ This should update the local configuration file of your Kubernetes client to poi
 jdbc:sqlserver://<*DBSRVNAME*>.database.windows.net:1433;database=<*DBNAME*>;user=<*USERNAME*>@<*DBSRVNAME*>;password=<*PASSWORD*>
 ```
 
-Replace the following tokens:
+Replace the following tokens, example is taken from the Azure SQL database created earlier:
 
 |Token|Value|
 |-----|-----|
-|<*DBSRVNAME*>|Database server name, example: |
-|<*DBNAME*>|Database name, example: |
-|<*USERNAME*>|Database server username, example: |
-|<*PASSWORD*>|Database server password, example: |
+|<*DBSRVNAME*>|Database server name, example: *mxsqldb*|
+|<*DBNAME*>|Database name, example: *companyexp*|
+|<*USERNAME*>|Database server username, for test purposes it is acceptable to use the server admin account details here |
+|<*PASSWORD*>|Database server password, use corresponding password|
 
 
