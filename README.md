@@ -149,4 +149,11 @@ Replace the following tokens, example is taken from the Azure SQL database creat
 |<*USERNAME*>|Database server username, for test purposes it is acceptable to use the server admin account details here |
 |<*PASSWORD*>|Database server password, use corresponding password|
 
+4) Go to the Managed File section of the Jenkins Configuration (Manage Jenkins > Managed Files). Upload the configuration files retrieved in the previous two steps using the names kubeconfig and mendixapp.yaml.
+
+![Adding Kubeconfig as managed file, p1](images/managedfile_kubeconfig.png "Adding Kubeconfig as managed file, p1")
+![Adding Kubeconfig as managed file, p2](images/managedfile_kubeconfig2.png "Adding Kubeconfig as managed file, p2")
+
+5) 
+
 
