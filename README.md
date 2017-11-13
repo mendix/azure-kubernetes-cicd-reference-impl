@@ -119,4 +119,33 @@ This can be done via the Azure Portal:
 
 ![Create database in Azure Portal](images/createazuredb.png "Create database in Azure Portal")
 
-## Part 4 - Deploying a Mendix instance on the Kubernetes cluster
+## Part 4 - Creating a deployment pipeline
+
+Now everything is in place to create our deployment pipeline:
+
+1) Install the Configuration File Provider plugin via Manage Jenkins > Manage Plugins and restart Jenkins.
+
+![Install Config File Provider plugin](images/conffileprovider.png "Install Config File Provider plugin")
+
+2) Get the cluster credentials by typing the following command on the shell you used to create the cluster above:
+'''
+az acs kubernetes get-credentials --resource-group=DevOps-Ref-Arch --name=mx-devops-ref-arch
+'''
+This should update the local configuration file of your Kubernetes client to point to the newly created cluster. This configuration file can be found in ~/.kube/config.
+
+3) Download the file deployment/mendixapp.yaml from this repository and update the database credentials inside it with the connection information of your Azure SQL database.
+
+'''
+value: "jdbc:sqlserver://<*DBSRVNAME*>.database.windows.net:1433;database=<*DBNAME*>;user=<*USERNAME*>@<*DBSRVNAME*>;password=<*PASSWORD*>"
+'''
+
+Replace the following tokens:
+
+|Token|Value|
+|-----|-----|
+|<*DBSRVNAME*>|Database server name, example: |
+|<*DBNAME*>|Database name, example: |
+|<*USERNAME*>|Database server username, example: |
+|<*PASSWORD*>|Database server password, example: |
+
+
