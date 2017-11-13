@@ -136,7 +136,7 @@ This should update the local configuration file of your Kubernetes client to poi
 3) Download the file deployment/mendixapp.yaml from this repository and update the database credentials inside it with the connection information of your Azure SQL database.
 
 '''
-jdbc:sqlserver://<*DBSRVNAME*>.database.windows.net:1433;database=<*DBNAME*>;user=<*USERNAME*>@<*DBSRVNAME*>;password=<*PASSWORD*>"
+jdbc:sqlserver://<*DBSRVNAME*>.database.windows.net:1433;database=<*DBNAME*>;user=<*USERNAME*>@<*DBSRVNAME*>;password=<*PASSWORD*>
 '''
 
 Replace the following tokens:
