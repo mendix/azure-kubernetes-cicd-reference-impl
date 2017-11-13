@@ -110,7 +110,7 @@ node {
 
 *Do not forget to set the correct URL for your Docker Registry and Subversion repository in the pipeline script *
 
-17) Execute the pipeline by clicking "Build now". Your project should now automatically be checked out from the team server and subsequently build.
+17) Execute the pipeline by clicking "Build now". Your project should now automatically be checked out from the team server and subsequently build. The resulting Docker Image is then pushed to the registry for storage.
 
 ## Part 3 - Deploy a database on Azure
 
