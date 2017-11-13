@@ -90,6 +90,11 @@ node {
       docker.withServer('unix:///var/run/docker.sock') {
         docker.withRegistry('https://index.docker.io/v1', 'dockerregistry')   {
           def image = docker.build("mxproject/companyexpenses:latest", '--build-arg BUILD_PATH=project .')
+          withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerregistry',
+          usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+            sh 'docker login -u "$USERNAME" -p "$PASSWORD"';
+            image.push();
+            }
           }
         }
      }
