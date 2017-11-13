@@ -152,8 +152,37 @@ Replace the following tokens, example is taken from the Azure SQL database creat
 4) Go to the Managed File section of the Jenkins Configuration (Manage Jenkins > Managed Files). Upload the configuration files retrieved in the previous two steps using the names kubeconfig and mendixapp.yaml.
 
 ![Adding Kubeconfig as managed file, p1](images/managedfile_kubeconfig.png "Adding Kubeconfig as managed file, p1")
-![Adding Kubeconfig as managed file, p2](images/managedfile_kubeconfig2.png "Adding Kubeconfig as managed file, p2")
+![Adding Kubeconfig as managed file, p2](images/managedfile_kubeconfig_2.png "Adding Kubeconfig as managed file, p2")
 
-5) 
+5) Create new Jenkins Pipeline (New Item > Pipeline)
 
+![Adding deployment pipeline](images/Jenkins_appdeploy.png "Adding deployment pipeline")
 
+6) Use the following script:
+
+```
+node {
+    stage('Deploy Company Expenses') {
+    configFileProvider([configFile(fileId: 'kubeconfig', targetLocation: '.kube/config'), configFile(fileId: 'mendixapp.yaml', targetLocation: 'mendixapp.yaml')]) {
+        sh "kubectl apply -f mendixapp.yaml"
+        }
+    }
+}
+```
+
+7) Executing this pipeline will deploy your app to the Kubernetes cluster
+
+## Part 5 - Accessing your app
+
+1) Execute the following command on the shell you used to deploy the cluster:
+
+```
+kubectl proxy
+```
+
+2) Open a browser and access the Kubernetes Dashboard via http:/localhost:8001/ui
+3) You will find a link to your app under services:
+
+![Access app in Kubernetes Dashboard](images/Kubernetes_accessapp.png "Access app in Kubernetes Dashboard")
+
+ENJOY!
