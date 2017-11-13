@@ -72,8 +72,6 @@ Setting the option might take a few tries of running into the error.
 13) Add a pod template & container configuration for the Jenkins Build Slaves: 
 ![Jenkins Build Slave config](images/JenkinsBuildSlaveConfig.png "Jenkins Build Slaves config")
 13) Set Jenkins not to build on the master: Manage Jenkins -> Configure System -> Usage = Only build jobs with label expressions matching this node
-TODO 14) Setup team server credentials:
-TODO 15) Setup Team Server URL / checkout config
 14) Setup a new pipeline: Create new Job > Pipeline > Enter the pipeline script
 ![Jenkins new job](images/JenkinsCreateNewJob.png "Jenkins new job")
 ![Jenkins new pipeline](images/JenkinsNewPipeline.png "Jenkins new pipeline")
