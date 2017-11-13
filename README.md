@@ -103,6 +103,6 @@ node {
 
 ![Jenkins credentials dockerregistry](images/JenkinsRegistryCredentials.png "Jenkins credentials dockerregistry")
 
-*Do not forget to set the correct URL for your registry in the pipeline script (standard is Docker Hub)*
+*Do not forget to set the correct URL for your Docker Registry and Subversion repository in the pipeline script *
 
 17) Execute the pipeline by clicking "Build now". Your project should now automatically be checked out from the team server and subsequently build.
