@@ -1,6 +1,6 @@
-# Mendix Azure Jenkins/Kubernetes CI/CD Reference Implementation
+# Mendix Azure Kubernetes CI/CD Reference Implementation
 
-The Mendix Azure Jenkins/Kubernetes CI/CD Reference Implementation is a reference implementation for running a cluster of Mendix runtime instances by setting up a Kubernetes cluster on Azure. The Kubernetes cluster will use Docker containers built using the [Mendix Docker buildpack](https://github.com/mendix/docker-mendix-buildpack). The build and deployment of containers on the cluster is orchestrated using Jenkins.
+The Mendix Azure Kubernetes CI/CD Reference Implementation is a reference implementation for running a cluster of Mendix runtime instances by setting up a Kubernetes cluster on Azure. The Kubernetes cluster will use Docker containers built using the [Mendix Docker buildpack](https://github.com/mendix/docker-mendix-buildpack). The build and deployment of containers on the cluster is orchestrated using Jenkins.
 
 # Components
 
@@ -11,7 +11,7 @@ The reference implementation uses the following components:
 - CI/CD platform: [Jenkins](https://jenkins.io/)
 - [Mendix Docker Build Pack](https://github.com/mendix/docker-mendix-buildpack)
 
-The flow is to run a Jenkins Master containerized in a Kubernetes cluster which spawns temporary Jenkin build slaves in seperate containers for executing Mendix building jobs (using the Mendix build pack). The compiled container image is stored in a registry and can subequently be used to deploy app nodes to the Kubernetes cluster.
+The flow is to run a Jenkins Master containerized in a Kubernetes cluster which spawns temporary Jenkin build slaves in seperate containers for executing Mendix building jobs (using the Mendix build pack). The compiled container image is stored in a private registry and can subequently be used to deploy app nodes to the Kubernetes cluster.
 
 ![Toolchain](images/Toolchain.png "Toolchain")
 
@@ -72,6 +72,8 @@ Setting the option might take a few tries of running into the error.
 13) Add a pod template & container configuration for the Jenkins Build Slaves: 
 ![Jenkins Build Slave config](images/JenkinsBuildSlaveConfig.png "Jenkins Build Slaves config")
 13) Set Jenkins not to build on the master: Manage Jenkins -> Configure System -> Usage = Only build jobs with label expressions matching this node
+TODO 14) Setup team server credentials:
+TODO 15) Setup Team Server URL / checkout config
 14) Setup a new pipeline: Create new Job > Pipeline > Enter the pipeline script
 ![Jenkins new job](images/JenkinsCreateNewJob.png "Jenkins new job")
 ![Jenkins new pipeline](images/JenkinsNewPipeline.png "Jenkins new pipeline")
@@ -90,11 +92,6 @@ node {
       docker.withServer('unix:///var/run/docker.sock') {
         docker.withRegistry('https://index.docker.io/v1', 'dockerregistry')   {
           def image = docker.build("mxproject/companyexpenses:latest", '--build-arg BUILD_PATH=project .')
-          withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerregistry',
-          usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-            sh 'docker login -u "$USERNAME" -p "$PASSWORD"';
-            image.push();
-            }
           }
         }
      }
@@ -108,81 +105,6 @@ node {
 
 ![Jenkins credentials dockerregistry](images/JenkinsRegistryCredentials.png "Jenkins credentials dockerregistry")
 
-*Do not forget to set the correct URL for your Docker Registry and Subversion repository in the pipeline script *
+*Do not forget to set the correct URL for your registry in the pipeline script (standard is Docker Hub)*
 
-17) Execute the pipeline by clicking "Build now". Your project should now automatically be checked out from the team server and subsequently build. The resulting Docker Image is then pushed to the registry for storage.
-
-## Part 3 - Deploy a database on Azure
-
-Your Mendix app needs a database to store persistent data. In this how-to we will use an Azure SQL Database for this  purpose. 
-This database can be created via the Azure Portal:
-
-*Do not forget to note the server admin login username and password chosen during database server creation, we will need those later*
-![Create database in Azure Portal](images/createazuredb.png "Create database in Azure Portal")
-
-## Part 4 - Creating a deployment pipeline
-
-Now everything is in place to create our deployment pipeline:
-
-1) Install the Configuration File Provider plugin via Manage Jenkins > Manage Plugins and restart Jenkins.
-
-![Install Config File Provider plugin](images/conffileprovider.png "Install Config File Provider plugin")
-
-2) Get the cluster credentials by typing the following command on the shell you used to create the cluster above:
-```
-az acs kubernetes get-credentials --resource-group=DevOps-Ref-Arch --name=mx-devops-ref-arch
-```
-This should update the local configuration file of your Kubernetes client to point to the newly created cluster. This configuration file can be found in ~/.kube/config.
-
-3) Download the file deployment/mendixapp.yaml from this repository and update the database credentials inside it with the connection information of your Azure SQL database.
-
-```
-jdbc:sqlserver://<*DBSRVNAME*>.database.windows.net:1433;database=<*DBNAME*>;user=<*USERNAME*>@<*DBSRVNAME*>;password=<*PASSWORD*>
-```
-
-Replace the following tokens, example values in the table below are taken from the Azure SQL database created earlier in this howto:
-
-|Token|Value|
-|-----|-----|
-|<*DBSRVNAME*>|Database server name, example: *mxsqldb*|
-|<*DBNAME*>|Database name, example: *companyexp*|
-|<*USERNAME*>|Database server username, for test purposes it is acceptable to use the server admin account details here |
-|<*PASSWORD*>|Database server password, use corresponding password|
-
-4) Go to the Managed File section of the Jenkins Configuration (Manage Jenkins > Managed Files). Upload the configuration files retrieved in the previous two steps using the ID names kubeconfig and mendixapp.yaml, respectively.
-
-![Adding Kubeconfig as managed file, p1](images/managedfile_kubeconfig.png "Adding Kubeconfig as managed file, p1")
-![Adding Kubeconfig as managed file, p2](images/managedfile_kubeconfig_2.png "Adding Kubeconfig as managed file, p2")
-
-5) Create new Jenkins Pipeline (New Item > Pipeline)
-
-![Adding deployment pipeline](images/Jenkins_appdeploy.png "Adding deployment pipeline")
-
-6) Use the following script:
-
-```
-node {
-    stage('Deploy Company Expenses') {
-    configFileProvider([configFile(fileId: 'kubeconfig', targetLocation: '.kube/config'), configFile(fileId: 'mendixapp.yaml', targetLocation: 'mendixapp.yaml')]) {
-        sh "kubectl apply -f mendixapp.yaml"
-        }
-    }
-}
-```
-
-7) Executing this pipeline (click "Build now") will deploy your app to the Kubernetes cluster
-
-## Part 5 - Accessing your app
-
-1) Execute the following command on the shell you used to deploy the cluster:
-
-```
-kubectl proxy
-```
-
-2) Open a browser and access the Kubernetes Dashboard via http:/localhost:8001/ui
-3) You will find a link to your app under services:
-
-![Access app in Kubernetes Dashboard](images/Kubernetes_accessapp.png "Access app in Kubernetes Dashboard")
-
-ENJOY!
+17) Execute the pipeline by clicking "Build now". Your project should now automatically be checked out from the team server and subsequently build.
