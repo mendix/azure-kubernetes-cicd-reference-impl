@@ -29,7 +29,7 @@ items:
             - containerPort: 80
             env:
               - name: DATABASE_ENDPOINT
-                value: "postgres://MxDbUser@mxpostgresqldb:dbpassword@mxpostgresqldb.postgres.database.azure.com/companyexpenses"
+                value: "jdbc:sqlserver://mxsqldb.database.windows.net:1433;database=<*DBNAME*>;user=<*USERNAME*>@mxsqldb;password=<*PASSWORD*>"
               - name: ADMIN_PASSWORD
                 value: "Password1!"            
   - apiVersion: "v1"
