@@ -1,3 +1,5 @@
+# UPDATE July 2019: This Reference Implementation is outdated and deprecated. An actively maintained, fully-featured, up-to-date reference implementation for running Mendix on Azure can be found here: https://github.com/mxclyde/mendix-kubernetes-azure 
+
 # Mendix Azure-Jenkins-Kubernetes CI/CD Reference Implementation
 
 The Mendix Azure-Jenkins-Kubernetes CI/CD Reference Implementation is a reference implementation for running a cluster of Mendix runtime instances by setting up a Kubernetes cluster on Azure. The Kubernetes cluster will use Docker containers built using the [Mendix Docker buildpack](https://github.com/mendix/docker-mendix-buildpack). The build and deployment of containers on the cluster is orchestrated using Jenkins.
